@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 // import { isAdmin } from '/middlewares/middleware.js';
-import { getTodos, getTodo, updateTodo, deleteTodo } from '../storages/mongodbTodo.js';
+import { getTodos, getTodo, updateTodo, deleteTodo, createTodo } from '../storages/mongodbTodo.js';
 
   
 
@@ -52,6 +52,16 @@ router.put('/complete', async (req, res) => {
         res.status(201).send({data:"Updated complete"})   
     } catch (e) {
         res.status(404).send({data:"Failed to update"})
+    }
+})
+
+router.post('/', async (req,res) => {
+    try {
+        const newTodo = req.body;
+        await createTodo(newTodo)
+        res.status(201).send({data: "Todo created"})
+    } catch (e) {
+        res.status(404).send({data:"Failed to create todo"})
     }
 })
 
