@@ -1,14 +1,14 @@
 import { Router } from 'express';
 const router = Router();
 // import { isAdmin } from '/middlewares/middleware.js';
-import { getUsers, getUser, updateUser, deleteUser } from '../storages/mongodb.js';
+import { get, updateUser, deleteUser } from '../storages/mongodb.js';
 
   
 
 router.get('/:email?', async (req, res) =>{
     try {
         const { email } = req.params;
-        const users = email ? await getUser({ email }) : await getUsers();
+        const users = await get('users', email);
         res.status(201).send({data:users})
     } catch (e) {
         res.status(404).send({data: "Something went wrong!"})

@@ -16,27 +16,17 @@ async function connectToMongoDB() {
     }
 }
 
-export async function getUsers() {
+export async function get(collection, email=false) {
     try {
         const db = await connectToMongoDB();
-        const coll = db.collection('users');
-        return coll.find({}).toArray();
+        const coll = db.collection(collection);
+        return email? await coll.findOne(user) : await coll.find({}).toArray();
     } catch (error) {
         console.log(error.message);
         throw new Error(error.message)
     }
 }
 
-
-export async function getUser(user) {
-    try {
-        const db = await connectToMongoDB();
-        const coll = db.collection('users');
-        return await coll.findOne(user)
-    } catch (e) {
-        throw new Error(e.message)
-    }
-}
 
 export async function createUser(user) {
     try {
